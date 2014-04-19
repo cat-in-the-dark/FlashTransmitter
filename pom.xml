@@ -7,6 +7,7 @@
     <groupId>com.catinthedark</groupId>
     <artifactId>flash_transmitter</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
     <modules>
         <module>flash_transmitter_lib</module>

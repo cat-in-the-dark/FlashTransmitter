@@ -33,6 +33,7 @@ public class RawDataTranslatorTest {
         dataList_5 = new ArrayList<Byte>(Arrays.asList(data_5));
     }
 
+    /*
     @Test
     public void testTranslate1() {
         ArrayList<Long> times = new ArrayList<Long>(Arrays.asList(timestamps_1));
@@ -40,6 +41,7 @@ public class RawDataTranslatorTest {
 
         Assert.assertEquals(dataList, bits);
     }
+    */
 
     @Test
     public void testTranslate2() {
@@ -49,6 +51,7 @@ public class RawDataTranslatorTest {
         Assert.assertEquals(dataList, bits);
     }
 
+    /*
     @Test
     public void testTranslate3() {
         ArrayList<Long> times = new ArrayList<Long>(Arrays.asList(timestamps_3));
@@ -56,6 +59,7 @@ public class RawDataTranslatorTest {
 
         Assert.assertEquals(dataList, bits);
     }
+    */
 
     @Test
     public void testTranslate4() {
