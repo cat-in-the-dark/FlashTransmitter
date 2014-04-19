@@ -4,6 +4,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <artifactId>flash_transmitter</artifactId>
+        <groupId>com.catinthedark</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
     <groupId>com.catinthedark</groupId>
     <artifactId>flash_transmitter_lib</artifactId>
     <version>1.0-SNAPSHOT</version>
