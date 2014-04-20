@@ -31,6 +31,12 @@ public class StartActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        Spinner spinnerScheme = (Spinner) findViewById(R.id.schemeDropdown);
+        ArrayAdapter<CharSequence> adapterScheme = ArrayAdapter.createFromResource(this,
+                R.array.encodings_array, android.R.layout.simple_spinner_item);
+        adapterScheme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerScheme.setAdapter(adapterScheme);
+
         Button transmitActivityButton = (Button) findViewById(R.id.transmitActivityButton);
         transmitActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override

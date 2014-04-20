@@ -26,7 +26,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Choose encoding algorythm"
+        android:text="Choose line coder"
         android:id="@+id/textView"
         />
 
@@ -35,4 +35,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/encodingDropdown"
         android:spinnerMode="dropdown"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Choose encoding scheme"
+            android:id="@+id/textView2"
+            />
+
+    <Spinner
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/schemeDropdown"
+            android:spinnerMode="dropdown"/>
 </LinearLayout>
