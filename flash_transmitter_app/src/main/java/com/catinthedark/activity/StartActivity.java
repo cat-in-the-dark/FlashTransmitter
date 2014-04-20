@@ -33,7 +33,7 @@ public class StartActivity extends Activity {
 
         Spinner spinnerScheme = (Spinner) findViewById(R.id.schemeDropdown);
         ArrayAdapter<CharSequence> adapterScheme = ArrayAdapter.createFromResource(this,
-                R.array.encodings_array, android.R.layout.simple_spinner_item);
+                R.array.schemes_array, android.R.layout.simple_spinner_item);
         adapterScheme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerScheme.setAdapter(adapterScheme);
 
