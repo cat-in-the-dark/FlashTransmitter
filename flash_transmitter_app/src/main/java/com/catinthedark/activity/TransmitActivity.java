@@ -13,6 +13,8 @@ import com.catinthedark.flash_transmitter.lib.algorithm.CompressedScheme;
 import com.catinthedark.flash_transmitter.lib.algorithm.Converter;
 import com.catinthedark.flash_transmitter.lib.algorithm.ManchesterLineCoder;
 
+import java.util.Arrays;
+
 import static java.lang.Thread.sleep;
 
 public class TransmitActivity extends Activity{
@@ -42,7 +44,7 @@ public class TransmitActivity extends Activity{
                 Converter converter = new Converter(scheme, coder);
                 Byte[] transmitBits = converter.makeBits(transmitString);
 
-                final String transmitValue = "0101010101010101" + transmitBits.toString().replaceAll("[\\]\\[\\, ]", "");
+                final String transmitValue = "0101010101010101" + Arrays.toString(transmitBits).replaceAll("[\\]\\[\\, ]", "");
 
                 Log.e(TAG, transmitValue);
                 final int frequency = Integer.valueOf(frequencyEditText.getText().toString());
