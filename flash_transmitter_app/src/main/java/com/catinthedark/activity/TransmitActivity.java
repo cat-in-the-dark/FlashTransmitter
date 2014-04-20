@@ -9,9 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.catinthedark.R;
-import com.catinthedark.flash_transmitter.lib.algorithm.CompressedScheme;
-import com.catinthedark.flash_transmitter.lib.algorithm.Converter;
-import com.catinthedark.flash_transmitter.lib.algorithm.ManchesterLineCoder;
+import com.catinthedark.flash_transmitter.lib.algorithm.*;
+import com.catintheddark.flash_transmitter.lib.factories.EncodingSchemeFactory;
+import com.catintheddark.flash_transmitter.lib.factories.LineCoderFactory;
 
 import java.util.Arrays;
 
@@ -28,6 +28,18 @@ public class TransmitActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
+        Bundle extras = getIntent().getExtras();
+        String encodingSchemeName = EncodingSchemeFactory.defaultScheme;
+        String lineCoderName = LineCoderFactory.defaultCoder;
+        if (extras != null) {
+            encodingSchemeName = extras.getString("encoding_scheme_name");
+            lineCoderName = extras.getString("line_coder_name");
+        }
+
+        final EncodingScheme scheme = EncodingSchemeFactory.build(encodingSchemeName);
+        final LineCoder coder = LineCoderFactory.build(lineCoderName);
+        final Converter converter = new Converter(scheme, coder);
+
         Button transmitButton = (Button) findViewById(R.id.transmitButton);
         transmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,10 +50,6 @@ public class TransmitActivity extends Activity{
 
                 String transmitString = transmitEditText.getText().toString();
 
-                // #TODO make dependency injection instead hardcode!!!
-                CompressedScheme scheme = new CompressedScheme();
-                ManchesterLineCoder coder = new ManchesterLineCoder();
-                Converter converter = new Converter(scheme, coder);
                 Byte[] transmitBits = converter.makeBits(transmitString);
 
                 final String transmitValue = "0101010101010101" + Arrays.toString(transmitBits).replaceAll("[\\]\\[\\, ]", "");

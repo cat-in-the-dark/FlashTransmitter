@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.catinthedark.R;
+import com.catinthedark.flash_transmitter.lib.algorithm.LineCoder;
+import com.catintheddark.flash_transmitter.lib.factories.EncodingSchemeFactory;
+import com.catintheddark.flash_transmitter.lib.factories.LineCoderFactory;
 
 /**
  * User: kirill
@@ -25,15 +28,15 @@ public class StartActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start);
 
-        Spinner spinner = (Spinner) findViewById(R.id.encodingDropdown);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.encodings_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        final Spinner spinnerCoder = (Spinner) findViewById(R.id.encodingDropdown);
+        ArrayAdapter<String> adapterEncoding = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, LineCoderFactory.getCodersNames());
+        adapterEncoding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCoder.setAdapter(adapterEncoding);
 
-        Spinner spinnerScheme = (Spinner) findViewById(R.id.schemeDropdown);
-        ArrayAdapter<CharSequence> adapterScheme = ArrayAdapter.createFromResource(this,
-                R.array.schemes_array, android.R.layout.simple_spinner_item);
+        final Spinner spinnerScheme = (Spinner) findViewById(R.id.schemeDropdown);
+        ArrayAdapter<String> adapterScheme = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, EncodingSchemeFactory.getSchemesNames());
         adapterScheme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerScheme.setAdapter(adapterScheme);
 
@@ -43,6 +46,8 @@ public class StartActivity extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent(StartActivity.this, TransmitActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("encoding_scheme_name", spinnerScheme.getSelectedItem().toString());
+                intent.putExtra("line_coder_name", spinnerCoder.getSelectedItem().toString());
                 startActivity(intent);
             }
         });
@@ -53,6 +58,8 @@ public class StartActivity extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent(StartActivity.this, ReceiveActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("encoding_scheme_name", spinnerScheme.getSelectedItem().toString());
+                intent.putExtra("line_coder_name", spinnerCoder.getSelectedItem().toString());
                 startActivity(intent);
             }
         });

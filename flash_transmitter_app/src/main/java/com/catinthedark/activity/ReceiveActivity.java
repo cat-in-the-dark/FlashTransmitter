@@ -13,10 +13,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import com.catinthedark.R;
-import com.catinthedark.flash_transmitter.lib.algorithm.CompressedScheme;
-import com.catinthedark.flash_transmitter.lib.algorithm.Converter;
-import com.catinthedark.flash_transmitter.lib.algorithm.ManchesterLineCoder;
-import com.catinthedark.flash_transmitter.lib.algorithm.RawDataTranslator;
+import com.catinthedark.flash_transmitter.lib.algorithm.*;
+import com.catintheddark.flash_transmitter.lib.factories.EncodingSchemeFactory;
+import com.catintheddark.flash_transmitter.lib.factories.LineCoderFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +53,8 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
 
     private ArrayList<Long> signals = new ArrayList<Long>();
 
+    private Converter converter;
+
     public final String TAG = "FlashTransmitter";
 
     private BroadcastReceiver updateViewReceiver = new BroadcastReceiver() {
@@ -76,6 +77,19 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.receive);
+
+        Bundle extras = getIntent().getExtras();
+        String encodingSchemeName = EncodingSchemeFactory.defaultScheme;
+        String lineCoderName = LineCoderFactory.defaultCoder;
+        if (extras != null) {
+            encodingSchemeName = extras.getString("encoding_scheme_name");
+            lineCoderName = extras.getString("line_coder_name");
+        }
+
+        EncodingScheme scheme = EncodingSchemeFactory.build(encodingSchemeName);
+        LineCoder coder = LineCoderFactory.build(lineCoderName);
+        this.converter = new Converter(scheme, coder);
+
         registerLightSensorListener();
     }
 
@@ -175,12 +189,7 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
             Log.d(TAG, "Signals: " + Arrays.toString(toPrimitive(signals.toArray(new Long[signals.size()]))));
             //Log.d(TAG, Engine.decodeSequence(signals).toString());
 
-            // #TODO construct classes in the activity constructor or elsewhere....
-            // #TODO make dependency injection instead hardcode!!!
-            CompressedScheme scheme = new CompressedScheme();
-            ManchesterLineCoder coder = new ManchesterLineCoder();
-            Converter converter = new Converter(scheme, coder);
-            String result = converter.makeString(new RawDataTranslator().translate(signals));
+            String result = this.converter.makeString(new RawDataTranslator().translate(signals));
 
             broadcastUpdate(STATE_CHANGED_ACTION, STATE_EXTRA_KEY, "Transmission of signal finished");
             broadcastUpdate(RESULT_RECEIVED_ACTION, RESULT_EXTRA_KEY, result);
