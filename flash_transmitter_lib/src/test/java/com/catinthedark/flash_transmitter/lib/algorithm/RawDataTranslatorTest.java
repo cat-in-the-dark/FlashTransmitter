@@ -37,43 +37,43 @@ public class RawDataTranslatorTest {
     @Test
     public void testTranslate1() {
         ArrayList<Long> times = new ArrayList<Long>(Arrays.asList(timestamps_1));
-        ArrayList<Byte> bits = dataTranslator.translate(times);
+        Byte[] bits = dataTranslator.translate(times);
 
-        Assert.assertEquals(dataList, bits);
+        Assert.assertEquals(dataList, Arrays.asList(bits));
     }
     */
 
     @Test
     public void testTranslate2() {
         ArrayList<Long> times = new ArrayList<Long>(Arrays.asList(timestamps_2));
-        ArrayList<Byte> bits = dataTranslator.translate(times);
+        Byte[] bits = dataTranslator.translate(times);
 
-        Assert.assertEquals(dataList, bits);
+        Assert.assertEquals(dataList, Arrays.asList(bits));
     }
 
     /*
     @Test
     public void testTranslate3() {
         ArrayList<Long> times = new ArrayList<Long>(Arrays.asList(timestamps_3));
-        ArrayList<Byte> bits = dataTranslator.translate(times);
+        Byte[] bits = dataTranslator.translate(times);
 
-        Assert.assertEquals(dataList, bits);
+        Assert.assertEquals(dataList, Arrays.asList(bits));
     }
     */
 
     @Test
     public void testTranslate4() {
         ArrayList<Long> times = new ArrayList<Long>(Arrays.asList(timestamps_4));
-        ArrayList<Byte> bits = dataTranslator.translate(times);
+        Byte[] bits = dataTranslator.translate(times);
 
-        Assert.assertEquals(dataList, bits);
+        Assert.assertEquals(dataList, Arrays.asList(bits));
     }
 
     @Test
     public void testTranslate5() {
         ArrayList<Long> times = new ArrayList<Long>(Arrays.asList(timestamps_5));
-        ArrayList<Byte> bits = dataTranslator.translate(times);
+        Byte[] bits = dataTranslator.translate(times);
 
-        Assert.assertEquals(dataList_5, bits);
+        Assert.assertEquals(dataList_5, Arrays.asList(bits));
     }
 }

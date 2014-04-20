@@ -12,7 +12,7 @@ public class RawDataTranslator {
      * @param timestamps Array of light changes'.
      * @return Array of received bits
      */
-    public ArrayList<Byte> translate(ArrayList<Long> timestamps) {
+    public Byte[] translate(ArrayList<Long> timestamps) {
         ArrayList<Long> intervals = new ArrayList<Long>();
         long lastTimestamp = timestamps.get(0);
         long maxInterval = Long.MIN_VALUE;
@@ -47,6 +47,6 @@ public class RawDataTranslator {
             bits.add((byte) 0); // alignment
         }
 
-        return bits;
+        return bits.toArray(new Byte[0]);
     }
 }
