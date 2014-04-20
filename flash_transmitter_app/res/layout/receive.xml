@@ -44,11 +44,4 @@
         android:layout_height="wrap_content"
         android:id="@+id/resultTextView"
         android:layout_gravity="center"/>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="250dip"
-        android:id="@+id/graphView">
-
-    </LinearLayout>
 </LinearLayout>

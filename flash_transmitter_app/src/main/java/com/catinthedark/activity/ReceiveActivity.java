@@ -11,16 +11,12 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.catinthedark.R;
 import com.catinthedark.flash_transmitter.lib.algorithm.CompressedScheme;
 import com.catinthedark.flash_transmitter.lib.algorithm.Converter;
 import com.catinthedark.flash_transmitter.lib.algorithm.ManchesterLineCoder;
 import com.catinthedark.flash_transmitter.lib.algorithm.RawDataTranslator;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.GraphViewSeries;
-import com.jjoe64.graphview.LineGraphView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,8 +56,6 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
 
     public final String TAG = "FlashTransmitter";
 
-    public static GraphViewSeries exampleSeries;
-
     private BroadcastReceiver updateViewReceiver = new BroadcastReceiver() {
 
         @Override
@@ -82,23 +76,7 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.receive);
-
-        exampleSeries = new GraphViewSeries(new GraphView.GraphViewData[] {
-        });
-
         registerLightSensorListener();
-
-        GraphView graphView = new LineGraphView(
-                this // context
-                , "GraphViewDemo" // heading
-        );
-        graphView.setViewPort(0, 20);
-        graphView.addSeries(exampleSeries);
-        graphView.setScalable(true);
-        graphView.setScrollable(true);
-
-        LinearLayout layout = (LinearLayout) findViewById(R.id.graphView);
-        layout.addView(graphView);
     }
 
     private void registerLightSensorListener() {
@@ -252,8 +230,6 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
 
         Log.d(TAG, "Brightness: " + String.valueOf(lux));
         updateSensorInfo("Brightness: " + String.valueOf(lux));
-
-//        ReceiveActivity.exampleSeries.appendData(new GraphView.GraphViewData(timestamp/1000, lux), true, 1000);
 
         switch (getCurrentState()) {
             case STATE_IDLE:

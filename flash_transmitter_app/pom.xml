@@ -33,13 +33,6 @@
             <artifactId>flash_transmitter_lib</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>com.jjoe64</groupId>
-            <artifactId>graphview</artifactId>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/GraphView-3.1.1.jar</systemPath>
-            <version>3.1.1</version>
-        </dependency>
     </dependencies>
 	<build>
 		<finalName>${project.artifactId}</finalName>
