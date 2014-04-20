@@ -28,7 +28,12 @@
 			<version>${platform.version}</version>
 			<scope>provided</scope>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>com.catinthedark</groupId>
+            <artifactId>flash_transmitter_lib</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 	<build>
 		<finalName>${project.artifactId}</finalName>
 		<pluginManagement>
@@ -47,7 +52,7 @@
 				<artifactId>android-maven-plugin</artifactId>
 				<configuration>
 					<sdk>
-						<platform>19</platform>
+						<platform>14</platform>
 					</sdk>
                 </configuration>
 			</plugin>
