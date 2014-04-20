@@ -13,6 +13,7 @@ import com.catinthedark.flash_transmitter.lib.algorithm.*;
 import com.catintheddark.flash_transmitter.lib.factories.EncodingSchemeFactory;
 import com.catintheddark.flash_transmitter.lib.factories.LineCoderFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static java.lang.Thread.sleep;
@@ -22,6 +23,7 @@ public class TransmitActivity extends Activity{
     public final String TAG = "FlashTransmitter";
     private TextView transmitRawTextView;
     private Boolean shouldTransmissionStop = false;
+    private final Byte[] synchroBits = {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,12 @@ public class TransmitActivity extends Activity{
 
                 Byte[] transmitBits = converter.makeBits(transmitString);
 
-                final String transmitValue = "0101010101010101" + Arrays.toString(transmitBits).replaceAll("[\\]\\[\\, ]", "");
+                ArrayList<Byte> dataList = new ArrayList<Byte>(synchroBits.length + transmitBits.length);
+                dataList.addAll(Arrays.asList(synchroBits));
+                dataList.addAll(Arrays.asList(transmitBits));
+
+                final String transmitValue = dataList.toString().replaceAll("[\\]\\[\\, ]", "");
+                final Byte[] data = dataList.toArray(new Byte[0]);
 
                 Log.e(TAG, transmitValue);
                 final int frequency = Integer.valueOf(frequencyEditText.getText().toString());
@@ -61,29 +68,29 @@ public class TransmitActivity extends Activity{
 
                 new Thread() {
                     public void run() {
-                        transmitData(transmitValue, frequency);
+                        transmitData(data, frequency);
                     }
                 }.start();
             }
         });
     }
 
-    private void transmitData(String text, int frequency) {
+    private void transmitData(Byte[] data, int frequency) {
 
         Camera camera = Camera.open();
 
         int millisInSecond = 1000;
         int period = millisInSecond / (frequency);
         Camera.Parameters parameters = camera.getParameters();
-        for (int i = 0; i < text.length(); i++) {
+        for(byte bit: data) {
             synchronized (shouldTransmissionStop) {
                 if (shouldTransmissionStop) {
                     break;
                 }
             }
-            char currentSymbol = text.charAt(i);
+
             try {
-                if (currentSymbol == '1') {
+                if (bit == 1) {
                     parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
                     camera.setParameters(parameters);
                     camera.startPreview();
