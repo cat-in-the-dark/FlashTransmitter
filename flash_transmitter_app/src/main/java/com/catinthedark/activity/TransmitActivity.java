@@ -9,11 +9,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.catinthedark.R;
-import com.catinthedark.flash_transmitter.lib.algorithm.*;
+import com.catinthedark.flash_transmitter.lib.algorithm.Converter;
+import com.catinthedark.flash_transmitter.lib.algorithm.EncodingScheme;
+import com.catinthedark.flash_transmitter.lib.algorithm.LineCoder;
 import com.catintheddark.flash_transmitter.lib.factories.EncodingSchemeFactory;
 import com.catintheddark.flash_transmitter.lib.factories.LineCoderFactory;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import static java.lang.Thread.sleep;
@@ -23,7 +24,6 @@ public class TransmitActivity extends Activity{
     public final String TAG = "FlashTransmitter";
     private TextView transmitRawTextView;
     private Boolean shouldTransmissionStop = false;
-    private final Byte[] synchroBits = {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,14 +52,9 @@ public class TransmitActivity extends Activity{
 
                 String transmitString = transmitEditText.getText().toString();
 
-                Byte[] transmitBits = converter.makeBits(transmitString);
+                final Byte[] transmitBits = converter.makeBits(transmitString);
 
-                ArrayList<Byte> dataList = new ArrayList<Byte>(synchroBits.length + transmitBits.length);
-                dataList.addAll(Arrays.asList(synchroBits));
-                dataList.addAll(Arrays.asList(transmitBits));
-
-                final String transmitValue = dataList.toString().replaceAll("[\\]\\[\\, ]", "");
-                final Byte[] data = dataList.toArray(new Byte[0]);
+                final String transmitValue = Arrays.toString(transmitBits).replaceAll("[\\]\\[\\, ]", "");
 
                 Log.e(TAG, transmitValue);
                 final int frequency = Integer.valueOf(frequencyEditText.getText().toString());
@@ -68,7 +63,7 @@ public class TransmitActivity extends Activity{
 
                 new Thread() {
                     public void run() {
-                        transmitData(data, frequency);
+                        transmitData(transmitBits, frequency);
                     }
                 }.start();
             }
