@@ -1,4 +1,4 @@
-package com.catintheddark.flash_transmitter.lib.factories;
+package com.catinthedark.flash_transmitter.lib.factories;
 
 import com.catinthedark.flash_transmitter.lib.algorithm.ASCIIScheme;
 import com.catinthedark.flash_transmitter.lib.algorithm.CompressedScheme;

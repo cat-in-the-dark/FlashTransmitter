@@ -10,9 +10,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 import com.catinthedark.R;
-import com.catinthedark.flash_transmitter.lib.algorithm.LineCoder;
-import com.catintheddark.flash_transmitter.lib.factories.EncodingSchemeFactory;
-import com.catintheddark.flash_transmitter.lib.factories.LineCoderFactory;
+import com.catinthedark.flash_transmitter.lib.factories.EncodingSchemeFactory;
+import com.catinthedark.flash_transmitter.lib.factories.LineCoderFactory;
 
 /**
  * User: kirill
