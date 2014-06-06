@@ -1,7 +1,5 @@
 package com.catinthedark.flash_transmitter.lib.algorithm;
 
-import java.util.ArrayList;
-
 /**
  * Created by Ilya on 15.04.2014.
  */
@@ -12,18 +10,28 @@ import java.util.ArrayList;
  */
 public class Converter {
     private EncodingScheme encodingScheme;
+    private ErrorCorrectionLayer errorCorrectionLayer;
+    private LogicalCodeLayer logicalCodeLayer;
     private LineCoder lineCoder;
 
-    public Converter(EncodingScheme scheme, LineCoder coder) {
+    public Converter(EncodingScheme scheme, LineCoder coder, ErrorCorrectionLayer correction, LogicalCodeLayer logical) {
         this.encodingScheme = scheme;
         this.lineCoder = coder;
+        this.errorCorrectionLayer = correction;
+        this.logicalCodeLayer = logical;
     }
 
     public Byte[] makeBits(String text){
-        return lineCoder.pack(encodingScheme.getBitCodes(text));
+        return lineCoder.pack(
+                logicalCodeLayer.pack(
+                        errorCorrectionLayer.addRedundancy(
+                                encodingScheme.getBitCodes(text))));
     }
 
     public String makeString(Byte[] bits) {
-        return encodingScheme.getSymbolsByBits(lineCoder.unpack(bits));
+        return encodingScheme.getSymbolsByBits(
+                errorCorrectionLayer.recoverData(
+                        logicalCodeLayer.unpack(
+                                lineCoder.unpack(bits))));
     }
 }

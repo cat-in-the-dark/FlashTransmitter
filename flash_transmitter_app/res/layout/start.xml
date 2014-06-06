@@ -48,4 +48,28 @@
             android:layout_height="wrap_content"
             android:id="@+id/schemeDropdown"
             android:spinnerMode="dropdown"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Chose logical code"
+            android:id="@+id/textView3"/>
+
+    <Spinner
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/logicalDropdown"
+            android:spinnerMode="dropdown"/>
+
+    <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Chose error correction"
+            android:id="@+id/textView4"/>
+
+    <Spinner
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/errorCorrectionDropdown"
+            android:spinnerMode="dropdown"/>
 </LinearLayout>

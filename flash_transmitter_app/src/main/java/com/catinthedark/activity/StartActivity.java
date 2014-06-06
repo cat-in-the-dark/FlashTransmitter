@@ -11,7 +11,9 @@ import android.widget.Spinner;
 
 import com.catinthedark.R;
 import com.catinthedark.flash_transmitter.lib.factories.EncodingSchemeFactory;
+import com.catinthedark.flash_transmitter.lib.factories.ErrorCorrectionFactory;
 import com.catinthedark.flash_transmitter.lib.factories.LineCoderFactory;
+import com.catinthedark.flash_transmitter.lib.factories.LogicalCodeFactory;
 
 /**
  * User: kirill
@@ -39,6 +41,18 @@ public class StartActivity extends Activity {
         adapterScheme.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerScheme.setAdapter(adapterScheme);
 
+        final Spinner spinnerLogicalCode = (Spinner) findViewById(R.id.logicalDropdown);
+        ArrayAdapter<String> adapterLogicalCode = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, LogicalCodeFactory.getLogicalCodesNames());
+        adapterLogicalCode.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerLogicalCode.setAdapter(adapterLogicalCode);
+
+        final Spinner spinnerErrorCorrection = (Spinner) findViewById(R.id.errorCorrectionDropdown);
+        ArrayAdapter<String> adapterErrorCorrection = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, ErrorCorrectionFactory.getErrorCorrectionNames());
+        adapterErrorCorrection.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerErrorCorrection.setAdapter(adapterErrorCorrection);
+
         Button transmitActivityButton = (Button) findViewById(R.id.transmitActivityButton);
         transmitActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +61,8 @@ public class StartActivity extends Activity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("encoding_scheme_name", spinnerScheme.getSelectedItem().toString());
                 intent.putExtra("line_coder_name", spinnerCoder.getSelectedItem().toString());
+                intent.putExtra("logical_code_name", spinnerLogicalCode.getSelectedItem().toString());
+                intent.putExtra("error_correction_name", spinnerErrorCorrection.getSelectedItem().toString());
                 startActivity(intent);
             }
         });
@@ -59,6 +75,8 @@ public class StartActivity extends Activity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("encoding_scheme_name", spinnerScheme.getSelectedItem().toString());
                 intent.putExtra("line_coder_name", spinnerCoder.getSelectedItem().toString());
+                intent.putExtra("logical_code_name", spinnerLogicalCode.getSelectedItem().toString());
+                intent.putExtra("error_correction_name", spinnerErrorCorrection.getSelectedItem().toString());
                 startActivity(intent);
             }
         });

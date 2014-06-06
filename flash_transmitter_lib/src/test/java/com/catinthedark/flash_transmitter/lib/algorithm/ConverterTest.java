@@ -14,7 +14,9 @@ public class ConverterTest {
     public void testTransitionOfASCIISchemeAndManchester() {
         ASCIIScheme scheme = new ASCIIScheme();
         ManchesterLineCoder lineCoder = new ManchesterLineCoder();
-        converter = new Converter(scheme, lineCoder);
+        ErrorCorrectionLayer correction = new EmptyErrorCorrectionLayer();
+        LogicalCodeLayer logical = new EmptyLogicalCodeLayer();
+        converter = new Converter(scheme, lineCoder, correction, logical);
 
         Assert.assertEquals(converter.makeString(converter.makeBits(hello_world)), hello_world);
     }
@@ -23,7 +25,9 @@ public class ConverterTest {
     public void testTransitionOfCompressedSchemeAndManchester() {
         CompressedScheme scheme = new CompressedScheme();
         ManchesterLineCoder lineCoder = new ManchesterLineCoder();
-        converter = new Converter(scheme, lineCoder);
+        ErrorCorrectionLayer correction = new EmptyErrorCorrectionLayer();
+        LogicalCodeLayer logical = new EmptyLogicalCodeLayer();
+        converter = new Converter(scheme, lineCoder, correction, logical);
 
         Assert.assertEquals(converter.makeString(converter.makeBits(hello_world)), hello_world.toUpperCase());
     }

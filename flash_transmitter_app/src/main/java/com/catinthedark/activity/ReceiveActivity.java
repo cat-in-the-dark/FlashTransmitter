@@ -15,7 +15,9 @@ import android.widget.TextView;
 import com.catinthedark.R;
 import com.catinthedark.flash_transmitter.lib.algorithm.*;
 import com.catinthedark.flash_transmitter.lib.factories.EncodingSchemeFactory;
+import com.catinthedark.flash_transmitter.lib.factories.ErrorCorrectionFactory;
 import com.catinthedark.flash_transmitter.lib.factories.LineCoderFactory;
+import com.catinthedark.flash_transmitter.lib.factories.LogicalCodeFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,14 +83,20 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
         Bundle extras = getIntent().getExtras();
         String encodingSchemeName = EncodingSchemeFactory.defaultScheme;
         String lineCoderName = LineCoderFactory.defaultCoder;
+        String errorCorrectionName = ErrorCorrectionFactory.defaultErrorCorrection;
+        String logicalCodeName = LogicalCodeFactory.defaultLogicalCode;
         if (extras != null) {
             encodingSchemeName = extras.getString("encoding_scheme_name");
             lineCoderName = extras.getString("line_coder_name");
+            logicalCodeName = extras.getString("logical_code_name");
+            errorCorrectionName = extras.getString("error_correction_name");
         }
 
-        EncodingScheme scheme = EncodingSchemeFactory.build(encodingSchemeName);
-        LineCoder coder = LineCoderFactory.build(lineCoderName);
-        this.converter = new Converter(scheme, coder);
+        final EncodingScheme scheme = EncodingSchemeFactory.build(encodingSchemeName);
+        final LineCoder coder = LineCoderFactory.build(lineCoderName);
+        final ErrorCorrectionLayer correction = ErrorCorrectionFactory.build(errorCorrectionName);
+        final LogicalCodeLayer logical = LogicalCodeFactory.build(logicalCodeName);
+        final Converter converter = new Converter(scheme, coder, correction, logical);
 
         registerLightSensorListener();
     }
