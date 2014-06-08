@@ -96,8 +96,8 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
         final LineCoder coder = LineCoderFactory.build(lineCoderName);
         final ErrorCorrectionLayer correction = ErrorCorrectionFactory.build(errorCorrectionName);
         final LogicalCodeLayer logical = LogicalCodeFactory.build(logicalCodeName);
-        final Converter converter = new Converter(scheme, coder, correction, logical);
 
+        this.converter = new Converter(scheme, coder, correction, logical);
         registerLightSensorListener();
     }
 
