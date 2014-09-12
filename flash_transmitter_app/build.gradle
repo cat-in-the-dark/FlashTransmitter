@@ -7,14 +7,14 @@ buildscript {
     }
 }
 
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 dependencies {
     compile project(":flash_transmitter_lib")
 }
 
 android {
-    compileSdkVersion 20
+    compileSdkVersion 17
     buildToolsVersion "20"
 
     sourceSets {
