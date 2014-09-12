@@ -4,8 +4,7 @@ import com.catinthedark.flash_transmitter.lib.algorithm.ASCIIScheme;
 import com.catinthedark.flash_transmitter.lib.algorithm.CompressedScheme;
 import com.catinthedark.flash_transmitter.lib.algorithm.EncodingScheme;
 import com.google.common.collect.ImmutableMap;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
+import java.lang.UnsupportedOperationException;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,18 +18,18 @@ public class EncodingSchemeFactory {
             .put("5-bit char table", CompressedScheme.class)
             .build();
 
-    public static EncodingScheme build(String klass) throws NotImplementedException {
+    public static EncodingScheme build(String klass) throws UnsupportedOperationException {
         Class scheme = SCHEMES_LIST.get(klass);
         if (scheme != null) {
             try {
                 return (EncodingScheme) scheme.newInstance();
             } catch (InstantiationException e) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             } catch (IllegalAccessException e) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             }
         } else {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
     }
 

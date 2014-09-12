@@ -3,7 +3,7 @@ package com.catinthedark.flash_transmitter.lib.factories;
 import com.catinthedark.flash_transmitter.lib.algorithm.EmptyErrorCorrectionLayer;
 import com.catinthedark.flash_transmitter.lib.algorithm.ErrorCorrectionLayer;
 import com.google.common.collect.ImmutableMap;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import java.lang.UnsupportedOperationException;
 
 import java.util.Map;
 import java.util.Set;
@@ -17,18 +17,18 @@ public class ErrorCorrectionFactory {
             .put("None", EmptyErrorCorrectionLayer.class)
             .build();
 
-    public static ErrorCorrectionLayer build(String klass) throws NotImplementedException {
+    public static ErrorCorrectionLayer build(String klass) throws UnsupportedOperationException {
         Class scheme = ERROR_CORRECTION_LIST.get(klass);
         if (scheme != null) {
             try {
                 return (ErrorCorrectionLayer) scheme.newInstance();
             } catch (InstantiationException e) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             } catch (IllegalAccessException e) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             }
         } else {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
     }
     public static String[] getErrorCorrectionNames() {

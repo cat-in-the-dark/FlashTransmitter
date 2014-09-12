@@ -3,7 +3,7 @@ package com.catinthedark.flash_transmitter.lib.factories;
 import com.catinthedark.flash_transmitter.lib.algorithm.LineCoder;
 import com.catinthedark.flash_transmitter.lib.algorithm.ManchesterLineCoder;
 import com.google.common.collect.ImmutableMap;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import java.lang.UnsupportedOperationException;
 
 import java.util.Map;
 import java.util.Set;
@@ -17,18 +17,18 @@ public class LineCoderFactory {
             .put("Manchester 802.3", ManchesterLineCoder.class)
             .build();
 
-    public static LineCoder build(String klass) throws NotImplementedException {
+    public static LineCoder build(String klass) throws UnsupportedOperationException {
         Class scheme = CODERS_LIST.get(klass);
         if (scheme != null) {
             try {
                 return (LineCoder) scheme.newInstance();
             } catch (InstantiationException e) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             } catch (IllegalAccessException e) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             }
         } else {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
     }
     public static String[] getCodersNames() {
