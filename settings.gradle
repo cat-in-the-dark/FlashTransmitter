@@ -1,0 +1,3 @@
+rootProject.name = 'FlashTransmitter'
+
+include 'flash_transmitter_app', 'flash_transmitter_lib'
