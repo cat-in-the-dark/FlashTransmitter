@@ -1,6 +1,7 @@
 package com.catinthedark.activity;
 
 import android.app.Activity;
+import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import com.catinthedark.flash_transmitter.lib.factories.ErrorCorrectionFactory;
 import com.catinthedark.flash_transmitter.lib.factories.LineCoderFactory;
 import com.catinthedark.flash_transmitter.lib.factories.LogicalCodeFactory;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static java.lang.Thread.sleep;
@@ -83,6 +85,14 @@ public class TransmitActivity extends Activity{
         int millisInSecond = 1000;
         int period = millisInSecond / (frequency);
         Camera.Parameters parameters = camera.getParameters();
+        SurfaceTexture st = new SurfaceTexture(0);
+
+        try {
+            camera.setPreviewTexture(st);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         for(byte bit: data) {
             synchronized (shouldTransmissionStop) {
                 if (shouldTransmissionStop) {
@@ -109,7 +119,6 @@ public class TransmitActivity extends Activity{
         parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
         camera.setParameters(parameters);
         camera.stopPreview();
-
         camera.release();
     }
 
