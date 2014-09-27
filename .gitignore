@@ -5,3 +5,6 @@ pom.xml.next
 release.properties
 .idea/
 *.iml
+*local.properties
+build/
+.gradle/
