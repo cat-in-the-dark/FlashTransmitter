@@ -92,7 +92,7 @@ public class CompressedScheme implements EncodingScheme {
             codes.add(charToByte.get(ch));
         }
 
-        return codes.toArray(new Byte[0]);
+        return codes.toArray(new Byte[codes.size()]);
     }
 
     @Override

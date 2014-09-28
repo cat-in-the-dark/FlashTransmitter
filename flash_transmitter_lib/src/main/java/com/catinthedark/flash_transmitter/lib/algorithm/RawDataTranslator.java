@@ -66,6 +66,6 @@ public class RawDataTranslator {
             bits.add((byte) 0); // alignment
         }
 
-        return bits.toArray(new Byte[0]);
+        return bits.toArray(new Byte[bits.size()]);
     }
 }

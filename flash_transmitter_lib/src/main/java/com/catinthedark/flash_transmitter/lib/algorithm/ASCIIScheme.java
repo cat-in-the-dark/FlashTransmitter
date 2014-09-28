@@ -27,7 +27,7 @@ public class ASCIIScheme implements EncodingScheme {
         byte[] codes = new byte[codesObjects.length];
         int i = 0;
         for (Byte b: codesObjects) {
-            codes[i++] = b.byteValue();
+            codes[i++] = b;
         }
 
         return new String(codes);
@@ -41,7 +41,7 @@ public class ASCIIScheme implements EncodingScheme {
             bitCodes.addAll(Arrays.asList(codeToBits(code)));
         }
 
-        return bitCodes.toArray(new Byte[0]);
+        return bitCodes.toArray(new Byte[bitCodes.size()]);
     }
 
     private Byte[] codeToBits(Byte code) {

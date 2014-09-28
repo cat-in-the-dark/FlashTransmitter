@@ -20,7 +20,7 @@ public class ManchesterLineCoder implements LineCoder {
             }
         }
 
-        return rawData.toArray(new Byte[0]);
+        return rawData.toArray(new Byte[rawData.size()]);
     }
 
     @Override
@@ -33,6 +33,6 @@ public class ManchesterLineCoder implements LineCoder {
             }
         }
 
-        return data.toArray(new Byte[0]);
+        return data.toArray(new Byte[data.size()]);
     }
 }
