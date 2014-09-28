@@ -20,8 +20,14 @@ import com.catinthedark.flash_transmitter.lib.factories.ErrorCorrectionFactory;
 import com.catinthedark.flash_transmitter.lib.factories.LineCoderFactory;
 import com.catinthedark.flash_transmitter.lib.factories.LogicalCodeFactory;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -82,6 +88,14 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
             public void onClick(View v) {
                 unregisterLightSensorListener();
 
+                Log.d(TAG, drawGraph(graph));
+
+                DateFormat dateFormat = new SimpleDateFormat("dd_MM_HH_mm_ss");
+                Date date = new Date();
+
+                String fileName = String.format("graph-%s.csv", dateFormat.format(date));
+                saveToFile(fileName, drawGraph(graph));
+
                 TreeMap<Long, Float> filteredGraph = new TreeMap<Long, Float>();
 
                 if (graph.size() > 1) {
@@ -114,10 +128,10 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
         mSensorManager.unregisterListener(this);
     }
 
-    private String drawGraph(TreeMap<Long, Float> filteredGraph) {
+    private String drawGraph(Map<Long, Float> graph) {
         StringBuilder builder = new StringBuilder();
-        for (Map.Entry<Long, Float> point: filteredGraph.entrySet()) {
-            builder.append(String.format("%d,%f\n", point.getKey(), point.getValue()));
+        for (Map.Entry<Long, Float> point: graph.entrySet()) {
+            builder.append(String.format("%d,%d\n", point.getKey(), point.getValue().intValue()));
         }
 
         return builder.toString();
@@ -147,5 +161,18 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
     protected void onPause() {
         unregisterLightSensorListener();
         super.onPause();
+    }
+
+    private void saveToFile(String filename, String data) {
+        File cacheDir = getExternalCacheDir();
+        File dstFile = new File(cacheDir, filename);
+
+        try {
+            OutputStream outputStream = new FileOutputStream(dstFile);
+            outputStream.write(data.getBytes());
+            outputStream.close();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
     }
 }
