@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FlashTransmitter</string>
+    <string name="end_transmmission">End transmission</string>
+    <string name="sensor_info">Light sensor info:</string>
+    <string name="result">Result:</string>
 </resources>

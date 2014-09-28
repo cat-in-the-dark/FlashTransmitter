@@ -1,9 +1,8 @@
 package com.catinthedark.flash_transmitter.lib.algorithm;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -17,40 +16,49 @@ public class Filter {
 
         int threshold = 5;
 
-        final ArrayList<Float> brightnesses = new ArrayList<Float>(graph.values());
-        ArrayList<Float> newBrightness = new ArrayList<Float>(brightnesses);
-        Collections.sort(newBrightness);
+        ArrayList<Float> brightnesses = new ArrayList<Float>(graph.values());
+        Collections.sort(brightnesses);
 
         int brightestIndex = -1;
-        float totalBrightness = 0;
 
         for (int i = 1; i < brightnesses.size() - 1; i++) {
-            if (brightestIndex != -1) {
-                totalBrightness += brightnesses.get(i);
-            } else if (brightnesses.get(i) / brightnesses.get(i - 1) > threshold) {
+            if (brightnesses.get(i) / brightnesses.get(i - 1) > threshold) {
                 brightestIndex = i;
+                break;
             }
-            // other brightnesses are not significant and should be omitted
         }
 
-        float significantBrightnessesCount = brightnesses.size() - brightestIndex;
+        List<Float> noiseBrightnesses = brightnesses.subList(0, brightestIndex);
+        List<Float> significantBrightnesses = brightnesses.subList(brightestIndex + 1, brightnesses.size());
 
-        float averageBrightness = totalBrightness / significantBrightnessesCount;
+        float avgNoiseBrightness = avg(noiseBrightnesses);
+        float averageBrightness = avg(significantBrightnesses) - avgNoiseBrightness;
 
         TreeMap<Long, Float> filteredGraph = new TreeMap<Long, Float>();
 
-        int lastBrightness = -1;
+        int lastBrightness = 0;
         for (Map.Entry<Long, Float> graphPoint: graph.entrySet()) {
-            if (graphPoint.getValue() < averageBrightness
-                    && (lastBrightness != 0)) {
-                filteredGraph.put(graphPoint.getKey(), 0f);
-                lastBrightness = 0;
-            } else if (lastBrightness != (int)averageBrightness) {
-                filteredGraph.put(graphPoint.getKey(), averageBrightness);
-                lastBrightness = (int)averageBrightness;
+            if (graphPoint.getValue() < averageBrightness) {
+                if (lastBrightness == (int) averageBrightness) {
+                    filteredGraph.put(graphPoint.getKey(), 0f);
+                    lastBrightness = 0;
+                }
+            } else {
+                if (lastBrightness == 0) {
+                    filteredGraph.put(graphPoint.getKey(), averageBrightness);
+                    lastBrightness = (int)averageBrightness;
+                }
             }
         }
 
         return filteredGraph;
+    }
+
+    private static float avg(List<Float> data) {
+        float totalData = 0;
+        for (float el : data) {
+            totalData += el;
+        }
+        return totalData / data.size();
     }
 }
