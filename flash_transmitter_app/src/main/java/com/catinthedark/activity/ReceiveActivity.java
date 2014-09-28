@@ -98,17 +98,19 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
 
                 TreeMap<Long, Float> filteredGraph = new TreeMap<Long, Float>();
 
-                if (graph.size() > 1) {
+                try {
                     filteredGraph = Filter.filter(graph);
+                    ArrayList<Long> signals = new ArrayList<Long>(filteredGraph.keySet());
+                    Log.d(TAG, "New way: " + Arrays.toString(new RawDataTranslator().translate(signals)));
+                    String result = converter.makeString(new RawDataTranslator().translate(signals));
+
+                    resultTextView.setText(String.format("\"%s\"", result));
+
+                    Log.d(TAG, drawGraph(filteredGraph));
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(),
+                            "Unable to parse received data", Toast.LENGTH_SHORT).show();
                 }
-
-                ArrayList<Long> signals = new ArrayList<Long>(filteredGraph.keySet());
-                Log.d(TAG, "New way: " + Arrays.toString(new RawDataTranslator().translate(signals)));
-                String result = converter.makeString(new RawDataTranslator().translate(signals));
-
-                resultTextView.setText(String.format("\"%s\"", result));
-
-                Log.d(TAG, drawGraph(filteredGraph));
             }
         });
     }
