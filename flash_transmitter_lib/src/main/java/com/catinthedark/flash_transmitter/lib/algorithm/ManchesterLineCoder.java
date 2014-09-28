@@ -30,9 +30,19 @@ public class ManchesterLineCoder implements LineCoder {
         ArrayList<Byte> data = new ArrayList<Byte>();
         Byte[] synchBits = manchesterSynchronizer.removeSynchroImpuls(bits);
 
-        for (int i = 0; i < synchBits.length; i += 2) {
-            if (synchBits[i] == (synchBits[i + 1] ^ 1)) {
-                data.add(synchBits[i]);
+        ArrayList<Byte> manchesterizedData = new ArrayList<Byte>();
+        for (int i = 0; i < synchBits.length - 1; i += 2) {
+            if (!synchBits[i].equals(synchBits[i + 1])) {
+                manchesterizedData.add(synchBits[i]);
+                manchesterizedData.add(synchBits[i + 1]);
+            } else {
+                i -= 1;
+            }
+        }
+
+        for (int i = 0; i < manchesterizedData.size(); i += 2) {
+            if (manchesterizedData.get(i) == (manchesterizedData.get(i + 1) ^ 1)) {
+                data.add(manchesterizedData.get(i));
             }
         }
 
