@@ -79,8 +79,13 @@ public class TransmitActivity extends Activity{
     }
 
     private void transmitData(Byte[] data, int frequency) {
-
-        Camera camera = Camera.open();
+        Camera camera;
+        try {
+            camera = Camera.open();
+        } catch (RuntimeException e) {
+            Log.w(TAG, "Skip transmitting: " + e.getMessage());
+            return;
+        }
 
         int millisInSecond = 1000;
         int period = millisInSecond / (frequency);
