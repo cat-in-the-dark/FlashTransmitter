@@ -10,6 +10,7 @@ buildscript {
 apply plugin: 'com.android.application'
 
 dependencies {
+    compile("com.google.code.gson:gson:2.3")
     compile project(":flash_transmitter_lib")
 }
 

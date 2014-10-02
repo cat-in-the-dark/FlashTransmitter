@@ -19,6 +19,12 @@ import com.catinthedark.flash_transmitter.lib.factories.EncodingSchemeFactory;
 import com.catinthedark.flash_transmitter.lib.factories.ErrorCorrectionFactory;
 import com.catinthedark.flash_transmitter.lib.factories.LineCoderFactory;
 import com.catinthedark.flash_transmitter.lib.factories.LogicalCodeFactory;
+import com.catinthedark.task.SubmitDataTask;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -29,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Map;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 /**
@@ -47,7 +54,7 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
     private TreeMap<Long, Float> graph;
     private Converter converter;
 
-    public final String TAG = "FlashTransmitter";
+    public final static String TAG = "FlashTransmitter";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,12 +114,38 @@ public class ReceiveActivity extends Activity implements SensorEventListener {
                     resultTextView.setText(String.format("\"%s\"", result));
 
                     Log.d(TAG, drawGraph(filteredGraph));
+
+                    new SubmitDataTask().execute(bundleResult(
+                            result,
+                            graph,
+                            filteredGraph));
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(),
                             "Unable to parse received data", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private String bundleResult(String parsedResult, TreeMap<Long, Float> graphData, TreeMap<Long, Float> filteredData) {
+        JsonObject result = new JsonObject();
+        result.addProperty("result", parsedResult);
+
+        JsonObject dataGraph = new JsonObject();
+        for (Map.Entry<Long, Float> set : graphData.entrySet()) {
+            dataGraph.addProperty(String.valueOf(set.getKey()), String.valueOf(set.getValue()));
+        }
+
+        JsonObject filteredDataGraph = new JsonObject();
+        for (Map.Entry<Long, Float> set : filteredData.entrySet()) {
+            filteredDataGraph.addProperty(String.valueOf(set.getKey()), String.valueOf(set.getValue()));
+        }
+        result.add("data", dataGraph);
+        result.add("filteredData", filteredDataGraph);
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
+
+        return gson.toJson(result);
     }
 
     private void registerLightSensorListener() {
